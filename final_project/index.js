@@ -6,7 +6,24 @@ const genl_routes = require('./router/general.js').general;
 
 const app = express();
 
+let users = [];
+
 app.use(express.json());
+
+
+
+// Check user list
+const doesExist = (username) => {
+    
+    let naMatch = users.filter((user) => user.username === username);
+    // set boolean false if available 
+    if (naMatch.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
@@ -57,7 +74,7 @@ app.post("/login", (req,res) => {
             // check Login info
             if (username && password){
                 if (!doesExist){
-                    customers.push({"username":username,"password":password});
+                    users.push({"username":username,"password":password});
                     return res.status(200).json({message: " Customer REGISTERED!"});
                 } else {
                     return res.status(404).json({message: "User already exist"});

@@ -4,9 +4,9 @@ const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
 
+
 const app = express();
 
-let users = [];
 
 app.use(express.json());
 
@@ -15,7 +15,9 @@ app.use(express.json());
 // Check user list
 const doesExist = (username) => {
     
-    let naMatch = users.filter((user) => user.username === username);
+    let naMatch = users.filter((user) => {
+        return user.username === username;
+    });
     // set boolean false if available 
     if (naMatch.length > 0) {
         return true;
@@ -77,7 +79,8 @@ app.post("/login", (req,res) => {
                     users.push({"username":username,"password":password});
                     return res.status(200).json({message: " Customer REGISTERED!"});
                 } else {
-                    return res.status(404).json({message: "User already exist"});
+                    //return res.status(404).json({message: "The user " + username +" already exist"});
+                    return res.status(404).json({message: "The user " + username + " exists "});
                 }
             }
        return res.status(404).json({message: "Cannot register-- invalid User"});

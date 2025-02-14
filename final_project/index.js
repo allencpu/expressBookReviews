@@ -5,12 +5,13 @@ const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
 
 
+
 const app = express();
 
 
 app.use(express.json());
 
-
+let users =[]; 
 
 // Check user list
 const doesExist = (username) => {
@@ -46,6 +47,7 @@ app.use("/customer/auth/*", function auth(req,res,next){
         return res.status(403).json({message: "User must Log in!"});
     }
 });
+
 // Customer Login
 app.post("/login", (req,res) => {
     username = req.body.username;
@@ -72,7 +74,7 @@ app.post("/login", (req,res) => {
         // Register new User
         app.post("/register", (req,res) => {
             const username = req.body.username;
-            const password = req.body.username;
+            const password = req.body.password;
             // check Login info
             if (username && password){
                 if (!doesExist){
@@ -80,14 +82,13 @@ app.post("/login", (req,res) => {
                     return res.status(200).json({message: " Customer REGISTERED!"});
                 } else {
                     //return res.status(404).json({message: "The user " + username +" already exist"});
-                    return res.status(404).json({message: "The user " + username + " exists "});
+                    return res.status(404).json({
+                        message: "The user " + username + " w/ password "+ password + " already exists "});
                 }
             }
        return res.status(404).json({message: "Cannot register-- invalid User"});
      });
     
-
-
  
 const PORT =5000;
 

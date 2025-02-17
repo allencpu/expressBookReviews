@@ -15,18 +15,12 @@ let users =[];
 
 // Check user list
 const doesExist = (username) => {
-    
-    let naMatch = users.filter((user) => {
-        return user.username === username;
-    });
-    // set boolean false if available 
-    if (naMatch.length > 0) {
+     if (users.includes( { name: {username}}))
+      {
         return true;
     } else {
-        return false;
+        return false;}
     }
-}
-
 
 app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
@@ -49,6 +43,11 @@ app.use("/customer/auth/*", function auth(req,res,next){
 });
 
 // Customer Login
+app.get('/users',function (req, res) {
+    //Write your code here
+    res.send(users);
+    //eturn res.status(300).json({message: "Yet to be implemented"});
+  });
 app.post("/login", (req,res) => {
     username = req.body.username;
     password = req.body.password;
@@ -77,13 +76,14 @@ app.post("/login", (req,res) => {
             const password = req.body.password;
             // check Login info
             if (username && password){
-                if (!doesExist){
+                if (!doesExist(username)){
                     users.push({"username":username,"password":password});
                     return res.status(200).json({message: " Customer REGISTERED!"});
                 } else {
                     //return res.status(404).json({message: "The user " + username +" already exist"});
                     return res.status(404).json({
                         message: "The user " + username + " w/ password "+ password + " already exists "});
+                      //  message: "The user " + doesExist(username) + " already exists "});
                 }
             }
        return res.status(404).json({message: "Cannot register-- invalid User"});

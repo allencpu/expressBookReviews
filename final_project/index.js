@@ -7,8 +7,7 @@ const genl_routes = require('./router/general.js').general;
 
 
 const app = express();
-
-
+//app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
 app.use(express.json());
 
 let users =[]; 
@@ -22,7 +21,7 @@ const doesExist = (username) => {
         return false;}
     }
 
-app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
+app.use("/customer",session({secret:"fingerprint_customer"},resave: true, saveUninitialized: true));
 
 app.use("/customer/auth/*", function auth(req,res,next){
     if (req.session.authorization){
@@ -55,7 +54,18 @@ app.post("/login", (req,res) => {
     if (!username || !password){
         return res.status(403).json({message: "not Valid Login"});
     }
-    // Re-Authenticate Customer
+    // Pre-Authenticate Customer
+
+    const authenticatedUser = (username,password) => {
+        if (users.includes( { name: {username}}) &&
+        {username: {password} == password}
+    )
+      {
+        return false;
+    } else {
+        return true;}
+
+    }
     if(authenticatedUser(username,password)){
         // create tokem
         let accessToken = jwt.sign({
@@ -63,7 +73,7 @@ app.post("/login", (req,res) => {
         },'access',{expiresIn:  60*60});
 
             req.session.authorization = {
-                accesstoken, username}
+                accessToken, username}
                 return res.status(200).send("Customer "+ username + " now Logged in");
             } else { 
                 return res.status(208).json({message: "Customer Not Logged In"});
@@ -80,10 +90,10 @@ app.post("/login", (req,res) => {
                     users.push({"username":username,"password":password});
                     return res.status(200).json({message: " Customer REGISTERED!"});
                 } else {
-                    //return res.status(404).json({message: "The user " + username +" already exist"});
+
                     return res.status(404).json({
                         message: "The user " + username + " w/ password "+ password + " already exists "});
-                      //  message: "The user " + doesExist(username) + " already exists "});
+                      
                 }
             }
        return res.status(404).json({message: "Cannot register-- invalid User"});

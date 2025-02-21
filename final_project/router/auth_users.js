@@ -5,23 +5,23 @@ const regd_users = express.Router();
 
 let users = [];
 
-const authenticatedUser = (username,password) => {
-    if (users.includes( { name: {username}}) &&
-    {username: {password} == password}
-)
-  {
-    return false;
-} else {
-    return true;}
-}
-
-const isValid = (username)=>{ 
-//returns boolean
+const isValid = (username)=>{ //returns boolean
 //write code to check is the username is valid
 }
-//returns boolean
-//write code to check if username and password match the one we have in records.
 
+const authenticatedUser = (username,password)=>{
+
+ // Validate users information matches the registered user
+    let validusers = users.filter((user) => {
+        return (user.username === username && user.password === password);
+    });
+    // Return true if any valid user is found, otherwise false
+    if (validusers.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 //only registered users can login
 regd_users.post("/login", (req,res) => {
@@ -31,22 +31,22 @@ regd_users.post("/login", (req,res) => {
     if (!username || !password){
         return res.status(403).json({message: "not Valid Login"});
     }
- 
-// Pre-Authenticate Customers before Logging in
+  //Write your code here
+   if(authenticatedUser(username,password)){
+        // create tokem
+        let accessToken = jwt.sign({
+            data: password
+        },'access',{expiresIn:  60*60});
 
-if(authenticatedUser(username,password)){
-    // create tokem
-    let accessToken = jwt.sign({
-        data: password
-    },'access',{expiresIn:  60*60});
-
-        req.session.authorization = {
-            accessToken, username}
-            return res.status(200).send("Customer "+ username + " now Logged in");
-        } else { 
-            return res.status(208).json({message: "Customer Not Logged In"});
-        }
-    });
+            req.session.authorization = {
+                accessToken, username}
+                return res.status(200).send("Customer "+ username + " now Logged in");
+            } else { 
+                return res.status(208).json({message: "Customer Not Logged In"});
+            }
+            
+        });
+  return res.status(300).json({message: "Yet to be implemented"});
 
 
 // Add a book review

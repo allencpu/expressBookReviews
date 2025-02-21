@@ -10,7 +10,6 @@ const isValid = (username)=>{ //returns boolean
 }
 
 const authenticatedUser = (username,password)=>{
-
  // Validate users information matches the registered user
     let validusers = users.filter((user) => {
         return (user.username === username && user.password === password);
@@ -23,16 +22,22 @@ const authenticatedUser = (username,password)=>{
     }
 }
 
+
 //only registered users can login
 regd_users.post("/login", (req,res) => {
-    username = req.body.username;
+  //Write your code here
+   username = req.body.username;
     password = req.body.password;
     // Verify Login info
     if (!username || !password){
         return res.status(403).json({message: "not Valid Login"});
     }
+    
+         
+    
   //Write your code here
    if(authenticatedUser(username,password)){
+     
         // create tokem
         let accessToken = jwt.sign({
             data: password
@@ -46,8 +51,7 @@ regd_users.post("/login", (req,res) => {
             }
             
         });
-  return res.status(300).json({message: "Yet to be implemented"});
-
+  
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {

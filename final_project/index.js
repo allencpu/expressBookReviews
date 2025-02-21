@@ -7,7 +7,7 @@ const genl_routes = require('./router/general.js').general;
 
 
 const app = express();
-//app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
+app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
 app.use(express.json());
 
 let users =[]; 
@@ -21,7 +21,7 @@ const doesExist = (username) => {
         return false;}
     }
 
-app.use("/customer",session({secret:"fingerprint_customer"},resave: true, saveUninitialized: true));
+//app.use("/customer",session({secret:"fingerprint_customer"},resave= true, saveUninitialized= true));
 
 app.use("/customer/auth/*", function auth(req,res,next){
     if (req.session.authorization){

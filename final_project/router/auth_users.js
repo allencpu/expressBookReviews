@@ -15,12 +15,6 @@ const isValid = (username)=>{ //returns boolean
        return false;}
    }
 
-
-
-const authenticatedUser = (username,password)=>{ //returns boolean
-//write code to check if username and password match the one we have in records.
-}
-
 //only registered users can login
 regd_users.post("/login", (req,res) => {
 //Write your code here
@@ -38,7 +32,7 @@ const authenticatedUser = (username,password) => {
   {
     return false;
 } else {
-    //users.push({"username":username,"password":password});
+    users.push({"username":username,"password":password});
     return true;}
 
 }
@@ -55,14 +49,24 @@ if(authenticatedUser(username,password)){
             return res.status(208).json({message: "Customer Not Logged In"});
         }
         
-
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    let  reviews = req.query.reviews;
+    let review =req.body.review;
+    const isbn =req.params.isbn;
+    let filtered_books = books.filtered((item) => item.ISBN === isbn);
+    if (filtered_books.length > 0 && (username === reviews.username)) {
+        let filtered_book = filtered_books[0];
+    
+        (filtered_book.reviews).push(review);}
+        books.push(filtered_book);
+        return res.status(200).send("Customer "+ username + "'s review is finished updating");
+
 });
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+})
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;

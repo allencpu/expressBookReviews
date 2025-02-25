@@ -12,10 +12,24 @@ function getDetails( item , detail){
             book=x;
         }
     }
+    
     if (book){return books[book];
     }else {
         return ("cannot locate this " + item);
 }}
+
+function getReviews (item, detail){
+    let book =0; let input ="";
+    for(let x=1; x<11;x++) {input = books[x];
+    if (input.ISBN == detail ){book=x;
+    }
+    if (book > 0){
+        return books[book].reviews;
+    }else {
+        return ("Cannot locate this " + detail);
+    }
+}}
+
 
 
 public_users.post("/register", (req,res) => {
@@ -33,7 +47,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   const output = getDetails("ISBN",req.params.isbn);
   res.send(output);
-  //return res.status(300).json({message: "Cannot locate that specific isbn"});
+  
  });
   
 // Get book details based on author
@@ -41,19 +55,20 @@ public_users.get('/author/:author',function (req, res) {
   //Write your code here
   const output = getDetails("author",req.params.author);
   res.send(output);
-//return res.status(300).json({message: "Cannot locate that author"});
+
 });
 // Get books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
   const output = getDetails("title",req.params.title);
   res.send(output);
- // return res.status(300).json({message: "Yet to be implemented"});
+ 
 });
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const output =getReviews("reviews",req.params.isbn);
+  res.send(output);
+  
 });
 
 module.exports.general = public_users;

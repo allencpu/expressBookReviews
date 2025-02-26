@@ -4,10 +4,8 @@ const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
 
-
-
 const app = express();
-app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
+//app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
 app.use(express.json());
 
 let users =[]; 
@@ -21,11 +19,11 @@ const doesExist = (username) => {
         return false;}
     }
 
-//app.use("/customer",session({secret:"fingerprint_customer"},resave= true, saveUninitialized= true));
+app.use("/customer",session({secret:"fingerprint_customer"},resave= true, saveUninitialized= true));
 
 app.use("/customer/auth/*", function auth(req,res,next){
     if (req.session.authorization){
-        let token = req.session.authorization['accesstoken'];
+        let token = req.session.authorization['accessToken'];
         
         // check JWT
         jwt.verify(token,"access",(err,user) => {
@@ -47,39 +45,7 @@ app.get('/users',function (req, res) {
     res.send(users);
     //eturn res.status(300).json({message: "Yet to be implemented"});
   });
-app.post("/login", (req,res) => {
-    username = req.body.username;
-    password = req.body.password;
-    // Verify Login info
-    if (!username || !password){
-        return res.status(403).json({message: "not Valid Login"});
-    }
-    // Pre-Authenticate Customer
 
-    const authenticatedUser = (username,password) => {
-        if (users.includes( { name: {username}}) &&
-        {username: {password} == password}
-    )
-      {
-        return false;
-    } else {
-        return true;}
-
-    }
-    if(authenticatedUser(username,password)){
-        // create tokem
-        let accessToken = jwt.sign({
-            data: password
-        },'access',{expiresIn:  60*60});
-
-            req.session.authorization = {
-                accessToken, username}
-                return res.status(200).send("Customer "+ username + " now Logged in");
-            } else { 
-                return res.status(208).json({message: "Customer Not Logged In"});
-            }
-            
-        });
         // Register new User
         app.post("/register", (req,res) => {
             const username = req.body.username;
@@ -93,7 +59,6 @@ app.post("/login", (req,res) => {
 
                     return res.status(404).json({
                         message: "The user " + username + " w/ password "+ password + " already exists "});
-                      
                 }
             }
        return res.status(404).json({message: "Cannot register-- invalid User"});

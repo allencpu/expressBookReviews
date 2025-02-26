@@ -5,7 +5,8 @@ const regd_users = express.Router();
 
 let users = [];
 
-const isValid = (username)=>{ //returns boolean
+const isValid = (username)=>{ 
+//returns boolean
 //write code to check is the username is valid
 
     if (users.includes( { name: {username}}))
@@ -48,7 +49,6 @@ if(authenticatedUser(username,password)){
         } else { 
             return res.status(208).json({message: "Customer Not Logged In"});
         }
-        
 });
 
 // Add a book review
@@ -57,13 +57,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     let review =req.body.review;
     const isbn =req.params.isbn;
     let filtered_books = books.filtered((item) => item.ISBN === isbn);
-    if (filtered_books.length > 0 && (username === reviews.username)) {
+    if (filtered_books.length > 0 ) {
         let filtered_book = filtered_books[0];
-    
-        (filtered_book.reviews).push(review);}
+        (filtered_book.reviews).push({"username":username,"review":review});}
         books.push(filtered_book);
         return res.status(200).send("Customer "+ username + "'s review is finished updating");
-
 });
 regd_users.delete("/auth/review/:isbn", (req, res) => {
 })

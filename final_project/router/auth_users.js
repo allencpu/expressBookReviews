@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
+
 const regd_users = express.Router();
 
 let users = [];
@@ -15,6 +16,19 @@ const isValid = (username)=>{
    } else {
        return false;}
    }
+
+   function findReviews (item, detail) {
+    let book =0; let input ="";
+    for(let x=1; x<11;x++) {input = books[x];
+    if (input.ISBN == detail ){book=x;
+    }
+    if (book > 0){
+        return books[book].reviews;
+    }else {
+        return ("Cannot locate this " + detail);
+    }
+}}
+
 
 //only registered users can login
 regd_users.post("/login", (req,res) => {
@@ -56,12 +70,12 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     let  reviews = req.query.reviews;
     let review =req.body.review;
     const isbn =req.params.isbn;
-    let filtered_books = books.filtered((item) => item.ISBN === isbn);
-    if (filtered_books.length > 0 ) {
-        let filtered_book = filtered_books[0];
-        (filtered_book.reviews).push({"username":username,"review":review});}
-        books.push(filtered_book);
-        return res.status(200).send("Customer "+ username + "'s review is finished updating");
+    //const filtered_book =getDetails("ISBN",isbn);
+    let oldReview = findReviews("reviews",isbn);
+    oldReview.push({"username":username,"review":review})
+      
+        //books.push(filtered_book);
+        return res.status(200).send("Customer "+ username + "'s review is finished"+ review);
 });
 regd_users.delete("/auth/review/:isbn", (req, res) => {
 })

@@ -43,6 +43,19 @@ function findDetails( item , detail){
         return ("cannot locate this " + item);
 }}
 
+function findWreviewer ( item, reviewer) {
+    let rev =0; let input ="";
+    let y = (titles[item].reviews).length
+    for (let x=0; x<y ; x++) {input = titles[item];
+    if ((input.reviews[x]).username == reviewer){
+         rev = x;
+    }}
+    if (rev){return rev;
+    }else {
+        return y;
+    }
+}
+
 
 
 //only registered users can login
@@ -85,27 +98,22 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     
     let review =(req.body.reviews).review;
     const isbn =req.params.isbn;
-    //const filtered_book =getDetails("ISBN",isbn);
+    
     let oldBook = findDetails("ISBN",isbn);
-    let author = req.query.author;
-    if (author) {newBook.author =author};
+   
+        let newBook =titles[oldBook];
 
+    let author = req.query.author;
+    if (author) {newBook.author = author};
     let title = req.query.title;
     if (title) {newBook.title = title};
     let ISBN = req.query.ISBN;
     if (ISBN) { newBook.ISBN =ISBN};
     let reviews =req.query.reviews;
-
-    if (reviews) {
-        reviews.push({"username":username,"review":review});
-         newBook.reviews =reviews};
-
-    //oldReview.push({"username":username,"review":review})
-   // let newReview = findReviews("reviews",isbn)
-      
-       // titles.push(...oldReview);
-        //return res.status(200).send("Customer "+ username + "'s review  "+ titles);
-    res.send(review);
+    
+    // if (reviews)    {newBook.reviews = review};
+   
+    res.send(newBook);
     });
 regd_users.delete("/auth/review/:isbn", (req, res) => {
 })

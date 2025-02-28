@@ -22,13 +22,13 @@ const isValid = (username)=>{
     let book =0; let input ="";
     for(let x=1; x<11;x++) {input = titles[x];
     if (input.ISBN == detail ){book=x;
-    }
+    }}
     if (book > 0){
         return titles[book].reviews;
     }else {
         return ("Cannot locate this " + detail);
     }
-}}
+}
 function findDetails( item , detail){
     let book=0;
     let input=""
@@ -111,7 +111,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if (ISBN) { newBook.ISBN =ISBN};
     let reviews =req.query.reviews;
     
-    // if (reviews)    {newBook.reviews = review};
+    if (reviews)    {newBook.reviews = review};
    
     res.send(newBook);
     });

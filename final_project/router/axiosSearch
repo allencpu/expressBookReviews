@@ -1,1 +1,15 @@
+let resource = require('fs');
+let fileData = "bookInventory.json";
+
+
+function readFile(fileName){
+    let data = resource.readFileSync(fileName);
+    
+    return data;
+}
+
+// Display information
+console.log('Getting information');
+let result = (readFile(fileData)).toString();
+console.log(result);
 

@@ -1,0 +1,55 @@
+{
+    "books":[{
+
+"author":"Chinua Achebe",
+"title": "Things Fall Apart",
+"ISBN":"978-0449239193",
+"reviews": [{"username":"allencpu","review":"excellent"},
+            {"username":"famousamos","review":"5-Stars"}]},
+
+{"author": "Hans Christian Andersen",
+"title": "Fairy tales",
+"ISBN":"978-0385189514",
+"reviews": [{}] },
+
+{"author": "Dante Alighieri",
+"title": "The Divine Comedy",
+"ISBN":"978-0385496988",
+"reviews": [{}] },
+
+{"author": "Unknown",
+"title": "The Epic Of Gilgamesh",
+"ISBN": "978-0140441000",
+"reviews": [{}] },
+
+{"author": "Unknown",
+"title": "The Book Of Job",
+"ISBN":"978-0393319002",
+"reviews": [{}] },
+
+{"author": "Unknown",
+"title": "One Thousand and One Nights",
+"ISBN":"978-0192750136",
+"reviews": [{}] },
+
+{"author": "Unknown",
+"title": "Njal's Saga",
+"ISBN":"9781420965193",
+"reviews": [{}] },
+
+{"author": "Jane Austen",
+"title": "Pride and Prejudice",
+"ISBN":"978-1441341709",
+"reviews": [{}] },
+
+{"author": "Honor de Balzac",
+"title": "Le Pere Goriot",
+"ISBN":"978-0393971668",
+"reviews": [{}] },
+
+{"author": "Samuel Beckett",
+"title": "Molloy, Malone Dies, The Unnamable, the trilogy",
+"ISBN":"978-0802144478",
+"reviews": [{}] }
+
+]}

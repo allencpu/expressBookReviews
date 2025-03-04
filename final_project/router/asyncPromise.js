@@ -1,31 +1,37 @@
-// Requiring prompt-sync module to enable synchronous user input
+let resource = require('fs');
+let fileData = "booksInventory.json";
 let prompt = require('prompt-sync')();
+ author="";
 
-// Requiring fs module - fs is used for File I/O
-let fs = require('fs');
 
-// Creating a new Promise to handle file reading
+function readFile(fileName){
+    let data = resource.readFileSync(fileName, { encoding: 'utf8', flag: 'r' });
+    return data;
+}
 const methCall = new Promise((resolve, reject) => {
     // Prompting the user to input the filename
-    let filename = prompt('What is the name of the file?');
-    try {
-        // Reading the file synchronously
-        const data = fs.readFileSync(filename, { encoding: 'utf8', flag: 'r' });
-        // Resolving the promise with the file data if read successfully
-        resolve(data);
+    
+    
+    console.log('Welcome to Books Inventory');
+     isbn = prompt("and which  ISBN  are you interested in?");
+   
+   
+     try {
+    const result = (readFile(fileData));   
+    resolve(result); 
     } catch (err) {
-        // Rejecting the promise if an error occurs
         reject(err);
     }
 });
+// Display information
 
-// Logging the promise object
-console.log(methCall);
-
-// Handling the resolved and rejected states of the promise
 methCall.then(
-    // Logging the file data if the promise is resolved
-    (data) => console.log(data),
-    // Logging an error message if the promise is rejected
-    (err) => console.log("Error reading file")
-);
+    (result) => {let c= (result.indexOf(isbn)-9);
+       let cc=(result.indexOf("title",c-40));
+       let ce=(result.indexOf("author",cc-40));
+        let d =(result.indexOf("review",c+title.length))
+    console.log(result.substring(ce,d+10
+    )),
+(err)=> console.log (" Err")
+});
+

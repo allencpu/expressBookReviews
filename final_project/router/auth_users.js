@@ -19,18 +19,18 @@ const isValid = (username)=>{
    }
 
    function findReviews (item, detail) {
-    let book =0; let input ="";
+    let book =13; let input ="";
     for(let x=1; x<11;x++) {input = titles[x];
     if (input.ISBN == detail ){book=x;
     }}
-    if (book > 0){
+    if (book < 13){
         return titles[book].reviews;
     }else {
         return ("Cannot locate this " + detail);
     }
 }
 function findDetails( item , detail){
-    let book=0;
+    let book=13;
     let input=""
     for(let x=1; x<11; x++) {input = titles[x];
         if (input[item] == detail){
@@ -38,7 +38,7 @@ function findDetails( item , detail){
         }
     }
     
-    if (book){return book;
+    if (book<13){return book;
     }else {
         return ("cannot locate this " + item);
 }}
@@ -111,17 +111,24 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     if (ISBN) { newBook.ISBN =ISBN};
     let reviews =req.query.reviews;
     
-    if (reviews)    {newBook.reviews = review};
+    newBook.reviews = review;
+    titles[oldBook]=newBook;
    
-    res.send(newBook);
+    res.send(titles[oldBook]);
     });
 regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const output = findDetails("ISBN",req.params.isbn);
+    let newBook = titles[output];
+    
+        newBook.reviews = {};
+        res.send(username+"'s review of "+ newBook.title+"  has been DELETED");
+    
+
 })
 //  Get book review
 regd_users.get('/review/:isbn',function (req, res) {
     const output =findReviews("reviews",req.params.isbn);
     res.send(output);
-    
   });
 
 module.exports.authenticated = regd_users;

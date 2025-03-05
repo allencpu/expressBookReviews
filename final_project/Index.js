@@ -4,11 +4,10 @@ const session = require('express-session')
 const customer_routes = require('./router/auth_users.js').authenticated;
 const genl_routes = require('./router/general.js').general;
 
+let users =[];
 const app = express();
-//app.use(session({secret:"fingerpint"},resave=true,saveUninitialized=true));
-app.use(express.json());
 
-let users =[]; 
+app.use(express.json());
 
 // Check user list
 const doesExist = (username) => {
@@ -19,34 +18,30 @@ const doesExist = (username) => {
         return false;}
     }
 
-app.use("/customer",session({secret:"fingerprint_customer"},resave= true, saveUninitialized= true));
+
+app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUninitialized: true}))
 
 app.use("/customer/auth/*", function auth(req,res,next){
-    if (req.session.authorization){
-        let token = req.session.authorization['accessToken'];
-        
-        // check JWT
-        jwt.verify(token,"access",(err,user) => {
-            if (!err) {
-                req.user = user;
-                next();
-            } else {
-                return res.status(403).json({message: "not Valid User"});
-            }
-        });
-    } else {
-        return res.status(403).json({message: "User must Log in!"});
-    }
-});
 
+//Write the authenication mechanism here
+
+});
 // Customer Login
 app.get('/users',function (req, res) {
     //Write your code here
     res.send(users);
     //eturn res.status(300).json({message: "Yet to be implemented"});
   });
+app.post("/customer/login", (req,res) => {
+    username = req.body.username;
+    password = req.body.password;
+    // Verify Login info
+    if (!username || !password){
+        return res.status(403).json({message: "not Valid Login"});
+    }
+})
 
-        // Register new User
+// Register new User
         app.post("/register", (req,res) => {
             const username = req.body.username;
             const password = req.body.password;
@@ -59,11 +54,10 @@ app.get('/users',function (req, res) {
 
                     return res.status(404).json({
                         message: "The user " + username + " w/ password "+ password + " already exists "});
+                      
                 }
             }
-       return res.status(404).json({message: "Cannot register-- invalid User"});
-     });
-    
+        })
  
 const PORT =5000;
 
